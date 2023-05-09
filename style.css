@@ -1,0 +1,61 @@
+#header{
+    background-color: blueviolet;
+    width: 500px;
+    height: 60px;
+    margin: auto;
+}
+
+#container{
+    position: relative;
+    z-index: 0;
+    background-color: rgb(255, 0, 0);
+    width: 500px;
+    height: 500px;
+    margin: auto;
+}
+
+#stats{
+    position: relative;
+    z-index: 1000;
+    background-color: aqua;
+    width: 500px;
+    height:90px;
+}
+
+#talk{
+    position:relative;
+    z-index: 1000;
+    background-color: rgb(42, 52, 165);
+    height: 90px;
+    top: 320px;
+}
+
+#inventory{
+    position: relative;
+    z-index: 500;
+    float: left;
+    background-color: aquamarine;
+    width: 80px;
+    height: 320px;
+    bottom: 90px;
+}
+
+#actions{
+    position: relative;
+    z-index: 500;
+    float: right;
+    background-color: yellow;
+    width: 80px;
+    height: 320px;
+    bottom: 90px;
+}
+
+#main{
+    position: relative;
+    z-index: 0;
+    background-color: rgb(255, 0, 234);
+    width: 340px;
+    height:320px;
+    bottom: 90px;
+    margin: auto;
+}
