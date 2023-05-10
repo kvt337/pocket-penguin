@@ -1,18 +1,24 @@
 #header{
-    background-color: blueviolet;
+    position: relative;
+    top: 40px;
     width: 500px;
-    height: 60px;
+    height: 140px;
     margin: auto;
 }
 
+/********************************************/
+
 #container{
     position: relative;
+    top: 40px;
     z-index: 0;
     background-color: rgb(255, 0, 0);
     width: 500px;
     height: 500px;
     margin: auto;
 }
+
+/********************************************/
 
 #stats{
     position: relative;
@@ -22,6 +28,16 @@
     height:90px;
 }
 
+#meter, #currency{
+    display: inline-block;;
+}
+
+#heart{
+    display: inline-block;
+}
+
+/********************************************/
+
 #talk{
     position:relative;
     z-index: 1000;
@@ -29,6 +45,8 @@
     height: 90px;
     top: 320px;
 }
+
+/********************************************/
 
 #inventory{
     position: relative;
@@ -40,6 +58,8 @@
     bottom: 90px;
 }
 
+/********************************************/
+
 #actions{
     position: relative;
     z-index: 500;
@@ -49,6 +69,8 @@
     height: 320px;
     bottom: 90px;
 }
+
+/********************************************/
 
 #main{
     position: relative;
