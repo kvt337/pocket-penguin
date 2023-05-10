@@ -1,6 +1,6 @@
 #header{
     position: relative;
-    top: 40px;
+    top: 20px;
     width: 500px;
     height: 140px;
     margin: auto;
@@ -10,26 +10,28 @@
 
 #container{
     position: relative;
-    top: 40px;
+    top: 20px;
     z-index: 0;
-    background-color: rgb(255, 0, 0);
     width: 500px;
-    height: 500px;
+    height: 534px;
     margin: auto;
 }
 
 /********************************************/
 
 #stats{
+    background: url('assets/stats.png');
+    right: 7px;
     position: relative;
     z-index: 1000;
-    background-color: aqua;
-    width: 500px;
-    height:90px;
+    width: 520px;
+    height:104px;
+    margin: auto;
 }
 
 #meter, #currency{
-    display: inline-block;;
+    margin-top: 50px;
+    display: inline-block;
 }
 
 #heart{
@@ -39,35 +41,38 @@
 /********************************************/
 
 #talk{
+    background: url('assets/talk.png');
     position:relative;
     z-index: 1000;
-    background-color: rgb(42, 52, 165);
-    height: 90px;
+    height: 124px;
+    width: 500px;
     top: 320px;
 }
 
 /********************************************/
 
 #inventory{
+    background: url('assets/sidebar.png');
     position: relative;
     z-index: 500;
     float: left;
     background-color: aquamarine;
     width: 80px;
     height: 320px;
-    bottom: 90px;
+    bottom: 124px;
 }
 
 /********************************************/
 
 #actions{
+    background: url('assets/sidebar.png');
     position: relative;
     z-index: 500;
     float: right;
     background-color: yellow;
     width: 80px;
     height: 320px;
-    bottom: 90px;
+    bottom: 124px;
 }
 
 /********************************************/
@@ -78,6 +83,6 @@
     background-color: rgb(255, 0, 234);
     width: 340px;
     height:320px;
-    bottom: 90px;
+    bottom: 124px;
     margin: auto;
 }
