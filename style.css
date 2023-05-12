@@ -1,3 +1,5 @@
+
+
 #header{
     position: relative;
     top: 20px;
@@ -9,6 +11,7 @@
 /********************************************/
 
 #container{
+    font-family: 'Terminal', 'Arial', 'sans-serif';
     position: relative;
     top: 20px;
     z-index: 0;
@@ -29,13 +32,35 @@
     margin: auto;
 }
 
-#meter, #currency{
-    margin-top: 50px;
+#meter, #meter-label, #currency{
+    margin-left: 30px;
+    margin-top: 45px;
+    display: inline-block;
+}
+
+/********************************************/
+
+#meter, #meter-label{
     display: inline-block;
 }
 
 #heart{
+    background: url('assets/heart.png');
+    width: 64px;
+    height: 48px;
     display: inline-block;
+}
+
+/********************************************/
+
+#snow-icon, #snow-label{
+    display: inline-block;
+}
+
+#snow-icon{
+    background: url('assets/snow.png');
+    width: 43px;
+    height: 42px;
 }
 
 /********************************************/
@@ -62,6 +87,30 @@
     bottom: 124px;
 }
 
+#store, #food, #toys{
+    margin-bottom: 10px;
+    margin-left: 8px;
+}
+
+#store{
+    background: url('assets/store.png');
+    margin-top: 105px;
+    width: 62px;
+    height: 30px;
+}
+
+#food{
+    background: url('assets/food.png');
+    width: 62px;
+    height: 30px;
+}
+
+#toys{
+    background: url('assets/toys.png');
+    width: 62px;
+    height: 30px;
+}
+
 /********************************************/
 
 #actions{
@@ -73,6 +122,30 @@
     width: 80px;
     height: 320px;
     bottom: 124px;
+}
+
+#eat, #play, #dance{
+    margin-bottom: 10px;
+    margin-left: 8px;
+}
+
+#eat{
+    background: url('assets/eat.png');
+    margin-top: 105px;
+    width: 62px;
+    height: 30px;
+}
+
+#play{
+    background: url('assets/play.png');
+    width: 62px;
+    height: 30px;
+}
+
+#dance{
+    background: url('assets/dance.png');
+    width: 62px;
+    height: 30px;
 }
 
 /********************************************/
