@@ -236,7 +236,7 @@
 #main{
     position: relative;
     z-index: 0;
-    background-color: rgb(217, 148, 238);
+    background: url('assets/main.png');
     width: 340px;
     height:320px;
     bottom: 124px;
