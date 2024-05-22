@@ -94,6 +94,8 @@
     margin-left: 8px;
 }
 
+/********************************************/
+
 #store-btn{
     background: url('assets/store.png');
     margin-top: 105px;
@@ -101,6 +103,7 @@
     height: 30px;
 }
 
+/*furniture*/
 #store-menu{
     display: none;
     position: absolute;
@@ -111,6 +114,17 @@
     top: 150px;
     background: url('assets/store-menu.png');
 }
+
+.food-items{
+    display: inline-block;
+    position: relative;
+    margin-top: 5px;
+    top: 35px;
+    left: 30px;
+}
+
+
+/********************************************/
 
 #food-btn{
     background: url('assets/food.png');
@@ -128,6 +142,46 @@
     top: 150px;
     background: url('assets/food-menu.png');
 }
+
+#food-item-one{
+    height: 60px;
+    width: 60px;
+    background-color: red;
+   
+}
+#food-item-two{
+    height: 60px;
+    width: 60px;
+    background-color: orange;
+    
+}
+
+#food-item-three{
+    height: 60px;
+    width: 60px;
+    background-color: yellow;
+    
+}
+
+#food-item-four{
+    height: 60px;
+    width: 60px;
+    background-color: green;   
+}
+
+#food-item-five{
+    height: 60px;
+    width: 60px;
+    background-color: blue;   
+}
+
+#food-item-six{
+    height: 60px;
+    width: 60px;
+    background-color: purple;   
+}
+
+/********************************************/
 
 #toys-btn{
     background: url('assets/toys.png');
@@ -228,7 +282,39 @@
     display: none;
     position: absolute;
 }
+/********************************************/
+@keyframes center {}
 
+@keyframes center-to-right {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(170%); }
+}
+
+@keyframes right-to-center {
+    0% { transform: translateX(170%); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes center-to-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-170%); }
+}
+
+@keyframes left-to-center {
+    0% { transform: translateX(-170%); }
+    100% { transform: translateX(0); }
+}
+
+#penguin{
+    z-index: 1000;
+    position: absolute;
+    background: url('assets/penguin/penguin_front.png');
+    left: 205px;
+    bottom: 140px;
+    width: 80px;
+    height: 96px;
+    animation: center 3s linear ; /* Adjust duration and timing function as needed */
+}
 
 
 /********************************************/
