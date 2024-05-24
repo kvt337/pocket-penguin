@@ -7,12 +7,12 @@ let animationPaused = false;
 // Function to handle animation end event
 
 function centertoRight() {
-    console.log("going right");
+    //console.log("going right");
     // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.png')";
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.gif')";
 
     // Apply the next animation
-    penguin.style.animation = 'center-to-right 5s linear forwards';
+    penguin.style.animation = 'center-to-right 3s linear forwards';
 
     // Remove previous event listener and add the new one
     penguin.removeEventListener('animationend', centertoRight);
@@ -20,12 +20,12 @@ function centertoRight() {
 }
 
 function righttoCenter() {
-    console.log("going back to center");
+    //console.log("going back to center");
     // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.png')";
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.gif')";
 
     // Apply the next animation
-    penguin.style.animation = 'right-to-center 5s linear forwards';
+    penguin.style.animation = 'right-to-center 3s linear forwards';
 
     // Remove previous event listener and add the new one
     penguin.removeEventListener('animationend', righttoCenter);
@@ -34,9 +34,9 @@ function righttoCenter() {
 
 // Preparing to go left
 function standtoLeft() {
-    console.log("preparing to go left");
+    //console.log("preparing to go left");
     penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
-    penguin.style.animation = 'center 3s linear forwards';
+    penguin.style.animation = 'center 2s linear forwards';
 
     // Remove previous event listener and add the new one
     penguin.removeEventListener('animationend', standtoLeft);
@@ -44,12 +44,12 @@ function standtoLeft() {
 }
 
 function centertoLeft() {
-    console.log("going left");
+    //console.log("going left");
     // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.png')";
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.gif')";
 
     // Apply the next animation
-    penguin.style.animation = 'center-to-left 5s linear forwards';
+    penguin.style.animation = 'center-to-left 3s linear forwards';
 
     // Remove previous event listener and add the new one
     penguin.removeEventListener('animationend', centertoLeft);
@@ -57,12 +57,12 @@ function centertoLeft() {
 }
 
 function lefttoCenter() {
-    console.log("going back to center");
+    //console.log("going back to center");
     // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.png')";
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.gif')";
 
     // Apply the next animation
-    penguin.style.animation = 'left-to-center 5s linear forwards';
+    penguin.style.animation = 'left-to-center 3s linear forwards';
 
     // Remove previous event listener and add the new one
     penguin.removeEventListener('animationend', lefttoCenter);
@@ -71,9 +71,9 @@ function lefttoCenter() {
 
 // Preparing to go right
 function standtoRight() {
-    console.log("preparing to go right");
+    //console.log("preparing to go right");
     penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
-    penguin.style.animation = 'center 3s linear forwards';
+    penguin.style.animation = 'center 2s linear forwards';
 
     // Remove previous event listener and add the new one
     penguin.removeEventListener('animationend', standtoRight);
@@ -95,23 +95,18 @@ function pauseAnimation() {
 
 // Initialize the loop by starting the first animation
 penguin.addEventListener('animationend', centertoRight);
-penguin.style.animation = 'center 3s linear forwards';
+penguin.style.animation = 'center 2s linear forwards';
 
 // Listen for click event to pause animation
 penguin.addEventListener('click', pauseAnimation);
+///////////////////////////////////////////////////////////////////////
 
-
-
-//
-
-
+//panel functions
 // Get all the buttons and divs
 const buttons = document.querySelectorAll('.toggle-button');
 const divs = document.querySelectorAll('.toggle-div');
 const back = document.querySelector('#back-button');
 //use same approach for back buttons
-
-
 // Add click event listeners to the buttons
 buttons.forEach((button, index) => {
   button.addEventListener('click', () => {
@@ -132,9 +127,12 @@ divs.forEach((div) => {
     div.style.display = 'none';
   });
 });
+/////////////////////////////////////////////////////////
 
-
-let snow = 0;
+//item functions
+//////////////////////////
+let snow = 10;
+let snowElement = document.querySelector('#snow-label');
 let mood = 3;
 
 
@@ -142,8 +140,9 @@ class Item{
   price;
   button;
 
-  constructor(price){
+  constructor(button, price){
     this.price = price;
+    this.button = button;
   }
 
   setPrice(price){
@@ -155,20 +154,41 @@ class Item{
   }
 }
 
-const foodItem1 = new Item(1);
-foodItem1.button = document.querySelector('#food-item-one');
-const foodItems = document.querySelectorAll('.food-items');
-
 function checkSnow(cost){
-
-
   if (snow-cost<0){
     return false;
   }
   else{
+    snow = snow-cost;
+    snowElement.textContent = `snow: ${snow}`;
     return true;
   }
 }
+
+//create items
+const storeItems = [];
+
+const storeItem1 = new Item(document.querySelector('#store-item-one'),1);
+const storeItem2 = new Item(document.querySelector('#store-item-two'),2);
+const storeItem3 = new Item(document.querySelector('#store-item-three'),3);
+const storeItem4 = new Item(document.querySelector('#store-item-four'),4);
+const storeItem5 = new Item(document.querySelector('#store-item-five'),5);
+const storeItem6 = new Item(document.querySelector('#store-item-six'),6);
+
+storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, storeItem6);
+
+//add event listener to item so that when clicked, can exchange snow or alert user that there is not enough snow
+storeItems.forEach(item => {
+  item.button.addEventListener('click', () => {
+    if (checkSnow(item.getPrice())) {
+      console.log("sufficient snow");
+    } else {
+      console.log("not enough snow");
+    }
+  });
+});
+
+
 
 /*const store_btn = document.querySelector('#store-btn');
 
