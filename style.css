@@ -42,7 +42,7 @@
     display: inline-block;
 }
 
-#heart{
+#heart-one, #heart-two, #heart-three{
     background: url('assets/heart.png');
     width: 62px;
     height: 48px;

@@ -133,7 +133,7 @@ divs.forEach((div) => {
 /////////////////////////////////////////////////////////
 let snow = 10;
 let snowElement = document.querySelector('#snow-label');
-let mood = 3;
+const mood = [];
 
 const storeItems = [];
 
@@ -141,12 +141,65 @@ const foodElement = document.querySelector('#eat-menu');
 const toyElement = document.querySelector('#play-menu');
 /////////////////////////////////////////////////////////
 
+//talk box
+/////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////
+
+//mood functions
+/////////////////////////////////////////////////////////
+class Heart{
+  button;
+  isFull;
+
+  constructor(button, isFull){
+    this.button = button;
+    this.isFull = isFull;
+    if (this.isFull){
+      this.setFull();
+    }
+    else{
+      this.setEmpty();
+    }
+  }
+
+  setEmpty(){
+    this.button.style.backgroundImage = "url('assets/heart_empty.png')";
+    this.isFull = false;
+  }
+
+  setFull(){
+    this.button.style.backgroundImage = "url('assets/heart.png')";
+    this.isFull = true;
+  }
+}
+
+const heart1 = new Heart(document.querySelector('#heart-one'), true);
+const heart2 = new Heart(document.querySelector('#heart-two'), true);
+const heart3 = new Heart(document.querySelector('#heart-three'), false);
+
+mood.push(heart1, heart2, heart3);
+
+function moodDecreaser(mood){
+  for( let i = mood.length-1; i>=0; i-- ){
+    if(mood[i].isFull){
+      mood[i].setEmpty();
+      break;
+    }
+  }
+}
+
+//decrease mood every 10 seconds
+setInterval(() => moodDecreaser(mood), 10000);
+
+/////////////////////////////////////////////////////////
+
 //inventory
 /////////////////////////////////////////////////////////
 
 function addToInventory(item) {
   item.addQuantity();
-
+  //console.log("quantity: " + item.getQuantity());
   let inventoryItem;
 
   // Check if the item already exists in the inventory
@@ -157,6 +210,7 @@ function addToInventory(item) {
 
     // Create a span element to hold the quantity
     const quantitySpan = document.createElement('span');
+    console.log("quantity in clone element: " + item.getQuantity());
     quantitySpan.textContent = ` Quantity: ${item.getQuantity()}`;
     inventoryItem.appendChild(quantitySpan);
 
@@ -169,6 +223,7 @@ function addToInventory(item) {
     // Add event listener to the cloned item when used on penguin
     inventoryItem.addEventListener('click', () => {
       item.removeQuantity();
+      console.log("quantity: " + item.getQuantity());
       quantitySpan.textContent = ` Quantity: ${item.getQuantity()}`;
       if (item.getQuantity() === 0) {
         inventoryItem.style.display = 'none';
@@ -286,7 +341,6 @@ storeItems.forEach(item => {
   });
 });
 /////////////////////////////////////////////////////////
-
 
 
 
