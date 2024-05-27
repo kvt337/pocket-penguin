@@ -1,105 +1,4 @@
-//penguin animations
 
-// Get the element
-const penguin = document.getElementById('penguin');
-let animationPaused = false;
-
-// Function to handle animation end event
-
-function centertoRight() {
-    //console.log("going right");
-    // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.gif')";
-
-    // Apply the next animation
-    penguin.style.animation = 'center-to-right 3s linear forwards';
-
-    // Remove previous event listener and add the new one
-    penguin.removeEventListener('animationend', centertoRight);
-    penguin.addEventListener('animationend', righttoCenter);
-}
-
-function righttoCenter() {
-    //console.log("going back to center");
-    // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.gif')";
-
-    // Apply the next animation
-    penguin.style.animation = 'right-to-center 3s linear forwards';
-
-    // Remove previous event listener and add the new one
-    penguin.removeEventListener('animationend', righttoCenter);
-    penguin.addEventListener('animationend', standtoLeft);
-}
-
-// Preparing to go left
-function standtoLeft() {
-    //console.log("preparing to go left");
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
-    penguin.style.animation = 'center 2s linear forwards';
-
-    // Remove previous event listener and add the new one
-    penguin.removeEventListener('animationend', standtoLeft);
-    penguin.addEventListener('animationend', centertoLeft);
-}
-
-function centertoLeft() {
-    //console.log("going left");
-    // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.gif')";
-
-    // Apply the next animation
-    penguin.style.animation = 'center-to-left 3s linear forwards';
-
-    // Remove previous event listener and add the new one
-    penguin.removeEventListener('animationend', centertoLeft);
-    penguin.addEventListener('animationend', lefttoCenter);
-}
-
-function lefttoCenter() {
-    //console.log("going back to center");
-    // Change the background image
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.gif')";
-
-    // Apply the next animation
-    penguin.style.animation = 'left-to-center 3s linear forwards';
-
-    // Remove previous event listener and add the new one
-    penguin.removeEventListener('animationend', lefttoCenter);
-    penguin.addEventListener('animationend', standtoRight);
-}
-
-// Preparing to go right
-function standtoRight() {
-    //console.log("preparing to go right");
-    penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
-    penguin.style.animation = 'center 2s linear forwards';
-
-    // Remove previous event listener and add the new one
-    penguin.removeEventListener('animationend', standtoRight);
-    penguin.addEventListener('animationend', centertoRight);
-}
-
-// Function to pause animation
-function pauseAnimation() {
-    if (!animationPaused) {
-        penguin.style.animationPlayState = 'paused';
-        animationPaused = true;
-        // Resume animation after 3 seconds
-        setTimeout(() => {
-            penguin.style.animationPlayState = 'running';
-            animationPaused = false;
-        }, 3000); // Adjust pause duration as needed (in milliseconds)
-    }
-}
-
-// Initialize the loop by starting the first animation
-penguin.addEventListener('animationend', centertoRight);
-penguin.style.animation = 'center 2s linear forwards';
-
-// Listen for click event to pause animation
-penguin.addEventListener('click', pauseAnimation);
-///////////////////////////////////////////////////////////////////////
 
 //panel functions
 // Get all the buttons and divs
@@ -143,6 +42,22 @@ const toyElement = document.querySelector('#play-menu');
 
 //talk box
 /////////////////////////////////////////////////////////
+
+let textID = document.querySelector('#text');
+let timeoutID;  // Variable to store the timeout ID
+
+function textBox(text) {
+  // Clear any existing timeout
+  clearTimeout(timeoutID);
+
+  // Set the text content to the provided text
+  textID.textContent = text;
+
+  // Set a new timeout to clear the text content after 5 seconds
+  timeoutID = setTimeout(() => {
+    textID.textContent = '';
+  }, 5000);
+}
 
 /////////////////////////////////////////////////////////
 
@@ -189,6 +104,15 @@ function moodDecreaser(mood){
   }
 }
 
+function moodIncreaser(mood, points) {
+  for (let i = 0; i < mood.length && points > 0; i++) {
+    if (!mood[i].isFull) {
+      mood[i].setFull();
+      points--;
+    }
+  }
+}
+
 //decrease mood every 10 seconds
 setInterval(() => moodDecreaser(mood), 10000);
 
@@ -223,12 +147,20 @@ function addToInventory(item) {
     // Add event listener to the cloned item when used on penguin
     inventoryItem.addEventListener('click', () => {
       item.removeQuantity();
+      textBox(item.getQuote());
+      moodIncreaser(mood, item.getMoodPoints());
+      if (item.itemType == 'food'){
+        foodElement.style.display = 'none';
+        back.style.display = 'none';
+      }
+      else if (item.itemType == 'toy'){
+        toyElement.style.display = 'none';
+        back.style.display = 'none';
+      }
       console.log("quantity: " + item.getQuantity());
       quantitySpan.textContent = ` Quantity: ${item.getQuantity()}`;
       if (item.getQuantity() === 0) {
         inventoryItem.style.display = 'none';
-      } else {
-        //change mood, display quote, add snow
       }
     });
   } 
@@ -333,15 +265,120 @@ storeItems.forEach(item => {
 
     if (checkSnow(item.getPrice())) {
       console.log("sufficient snow");
+      textBox("you bought " + item.getName());
       addToInventory(item);
     } else {
       console.log("not enough snow");
+      textBox("not enough snow");
     }
 
   });
 });
 /////////////////////////////////////////////////////////
+//penguin animations
 
+// Get the element
+const penguin = document.getElementById('penguin');
+let animationPaused = false;
+
+// Function to handle animation end event
+
+function centertoRight() {
+    //console.log("going right");
+    // Change the background image
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.gif')";
+
+    // Apply the next animation
+    penguin.style.animation = 'center-to-right 3s linear forwards';
+
+    // Remove previous event listener and add the new one
+    penguin.removeEventListener('animationend', centertoRight);
+    penguin.addEventListener('animationend', righttoCenter);
+}
+
+function righttoCenter() {
+    //console.log("going back to center");
+    // Change the background image
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.gif')";
+
+    // Apply the next animation
+    penguin.style.animation = 'right-to-center 3s linear forwards';
+
+    // Remove previous event listener and add the new one
+    penguin.removeEventListener('animationend', righttoCenter);
+    penguin.addEventListener('animationend', standtoLeft);
+}
+
+// Preparing to go left
+function standtoLeft() {
+    //console.log("preparing to go left");
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
+    penguin.style.animation = 'center 2s linear forwards';
+
+    // Remove previous event listener and add the new one
+    penguin.removeEventListener('animationend', standtoLeft);
+    penguin.addEventListener('animationend', centertoLeft);
+}
+
+function centertoLeft() {
+    //console.log("going left");
+    // Change the background image
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_left.gif')";
+
+    // Apply the next animation
+    penguin.style.animation = 'center-to-left 3s linear forwards';
+
+    // Remove previous event listener and add the new one
+    penguin.removeEventListener('animationend', centertoLeft);
+    penguin.addEventListener('animationend', lefttoCenter);
+}
+
+function lefttoCenter() {
+    //console.log("going back to center");
+    // Change the background image
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_right.gif')";
+
+    // Apply the next animation
+    penguin.style.animation = 'left-to-center 3s linear forwards';
+
+    // Remove previous event listener and add the new one
+    penguin.removeEventListener('animationend', lefttoCenter);
+    penguin.addEventListener('animationend', standtoRight);
+}
+
+// Preparing to go right
+function standtoRight() {
+    //console.log("preparing to go right");
+    penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
+    penguin.style.animation = 'center 2s linear forwards';
+
+    // Remove previous event listener and add the new one
+    penguin.removeEventListener('animationend', standtoRight);
+    penguin.addEventListener('animationend', centertoRight);
+}
+
+// Function to pause animation
+function pauseAnimation() {
+    if (!animationPaused) {
+        penguin.style.animationPlayState = 'paused';
+        animationPaused = true;
+        // Resume animation after 3 seconds
+        setTimeout(() => {
+            penguin.style.animationPlayState = 'running';
+            animationPaused = false;
+        }, 3000); // Adjust pause duration as needed (in milliseconds)
+    }
+}
+
+// Initialize the loop by starting the first animation
+penguin.addEventListener('animationend', centertoRight);
+penguin.style.animation = 'center 2s linear forwards';
+
+// Listen for click event to pause animation
+penguin.addEventListener('click', () => {
+  pauseAnimation();
+});
+///////////////////////////////////////////////////////////////////////
 
 
 /*const store_btn = document.querySelector('#store-btn');

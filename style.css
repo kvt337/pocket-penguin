@@ -63,7 +63,7 @@
 
 /********************************************/
 
-#talk{
+#speech-box{
     background: url('assets/talk.png');
     position:relative;
     z-index: 1000;
@@ -72,6 +72,10 @@
     top: 320px;
 }
 
+#text{
+    position:absolute;
+    margin-left: 20px;
+}
 /********************************************/
 
 #inventory{
