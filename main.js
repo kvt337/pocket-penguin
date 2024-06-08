@@ -1,5 +1,3 @@
-
-
 //panel functions
 // Get all the buttons and divs
 const buttons = document.querySelectorAll('.toggle-button');
@@ -63,27 +61,26 @@ function textBox(text) {
 
 //mood functions
 /////////////////////////////////////////////////////////
-class Heart{
+class Heart {
   button;
   isFull;
 
-  constructor(button, isFull){
+  constructor(button, isFull) {
     this.button = button;
     this.isFull = isFull;
-    if (this.isFull){
+    if (this.isFull) {
       this.setFull();
-    }
-    else{
+    } else {
       this.setEmpty();
     }
   }
 
-  setEmpty(){
+  setEmpty() {
     this.button.style.backgroundImage = "url('assets/heart_empty.png')";
     this.isFull = false;
   }
 
-  setFull(){
+  setFull() {
     this.button.style.backgroundImage = "url('assets/heart.png')";
     this.isFull = true;
   }
@@ -95,13 +92,25 @@ const heart3 = new Heart(document.querySelector('#heart-three'), false);
 
 mood.push(heart1, heart2, heart3);
 
-function moodDecreaser(mood){
-  for( let i = mood.length-1; i>=0; i-- ){
-    if(mood[i].isFull){
+function moodDecreaser(mood) {
+  for (let i = mood.length - 1; i >= 0; i--) {
+    if (mood[i].isFull) {
       mood[i].setEmpty();
       break;
     }
   }
+}
+
+let moodDecreaserInterval;
+
+function startMoodDecreaser() {
+  // Clear the existing interval if it exists
+  if (moodDecreaserInterval) {
+    clearInterval(moodDecreaserInterval);
+  }
+
+  // Start a new interval
+  moodDecreaserInterval = setInterval(() => moodDecreaser(mood), 10000);
 }
 
 function moodIncreaser(mood, points) {
@@ -109,38 +118,46 @@ function moodIncreaser(mood, points) {
     if (!mood[i].isFull) {
       mood[i].setFull();
       points--;
+
+      // Reset the mood decreaser timer
+      startMoodDecreaser();
     }
   }
 }
 
-//decrease mood every 10 seconds
-setInterval(() => moodDecreaser(mood), 10000);
+// Initialize the mood decreaser interval when the script runs
+startMoodDecreaser();
 
 /////////////////////////////////////////////////////////
+
 
 //inventory
 /////////////////////////////////////////////////////////
-
 function addToInventory(item) {
   item.addQuantity();
-  //console.log("quantity: " + item.getQuantity());
-  let inventoryItem;
+  console.log("quantity after adding: " + item.getQuantity()); // Added logging
 
-  // Check if the item already exists in the inventory
-  if (item.getQuantity() <= 1) {
+  let inventoryItem;
+  let quantityElement;
+
+  // Find the existing cloned item in the inventory using data attribute
+  const selector = `[data-id="${item.button.id}"]`;
+  inventoryItem = foodElement.querySelector(selector) || toyElement.querySelector(selector);
+
+  if (!inventoryItem) {
     // Clone the button element if it does not exist in the inventory
     inventoryItem = item.button.cloneNode(true);
     inventoryItem.setAttribute('data-id', item.button.id); // Assign a data attribute
+    inventoryItem.classList.add('store-items');
 
     // Create a span element to hold the quantity
-    const quantitySpan = document.createElement('span');
-    console.log("quantity in clone element: " + item.getQuantity());
-    quantitySpan.textContent = ` Quantity: ${item.getQuantity()}`;
-    inventoryItem.appendChild(quantitySpan);
+    quantityElement = document.createElement('p');
+    quantityElement.innerHTML = item.getQuantity();
+    inventoryItem.appendChild(quantityElement);
 
-    if (item.getItemType() == "food") {
+    if (item.getItemType() === "food") {
       foodElement.appendChild(inventoryItem);
-    } else if (item.getItemType() == "toy") {
+    } else if (item.getItemType() === "toy") {
       toyElement.appendChild(inventoryItem);
     }
 
@@ -149,32 +166,79 @@ function addToInventory(item) {
       item.removeQuantity();
       textBox(item.getQuote());
       moodIncreaser(mood, item.getMoodPoints());
-      if (item.itemType == 'food'){
+
+      if (item.itemType === 'food') {
         foodElement.style.display = 'none';
         back.style.display = 'none';
-      }
-      else if (item.itemType == 'toy'){
+      } else if (item.itemType === 'toy') {
         toyElement.style.display = 'none';
         back.style.display = 'none';
       }
-      console.log("quantity: " + item.getQuantity());
-      quantitySpan.textContent = ` Quantity: ${item.getQuantity()}`;
+
+      console.log("quantity after using: " + item.getQuantity()); // Added logging
+
+      // Update the quantity span in the cloned item
+      const updatedQuantityElement = inventoryItem.querySelector('p');
+      if (updatedQuantityElement) {
+        updatedQuantityElement.innerHTML = item.getQuantity();
+      } else {
+        console.error("Quantity span not found in inventory item");
+      }
+
       if (item.getQuantity() === 0) {
         inventoryItem.style.display = 'none';
       }
     });
-  } 
-  else {
-    // Find the existing cloned item in the inventory using data attribute
-    const selector = `[data-id="${item.button.id}"]`;
-    inventoryItem = foodElement.querySelector(selector) || toyElement.querySelector(selector);
-    if (inventoryItem) {
-      // Update the quantity span
-      const quantitySpan = inventoryItem.querySelector('span');
-      quantitySpan.textContent = ` Quantity: ${item.getQuantity()}`;
+  } else {
+    // Update the quantity span
+    quantityElement = inventoryItem.querySelector('p');
+    if (quantityElement) {
+      console.log("Updating existing quantity span: " + item.getQuantity()); // Added logging
+      quantityElement.innerHTML = item.getQuantity();
+    } else {
+      console.error("Quantity span not found in existing inventory item");
     }
   }
 }
+
+function updateInventory() {
+  storeItems.forEach(item => {
+    const selector = `[data-id="${item.button.id}"]`;
+    let inventoryItem = foodElement.querySelector(selector) || toyElement.querySelector(selector);
+
+    if (inventoryItem) {
+      const quantityElement = inventoryItem.querySelector('p');
+      if (quantityElement) {
+        quantityElement.innerHTML = item.getQuantity();
+        if (item.getQuantity() === 0) {
+          inventoryItem.style.display = 'none';
+        } else {
+          inventoryItem.style.display = 'inline-block';
+          inventoryItem.style.marginRight = "4px";
+        }
+      }
+    }
+  });
+}
+
+// Add this to ensure the inventory is updated when switching views
+buttons.forEach((button, index) => {
+  button.addEventListener('click', () => {
+    // Hide all divs
+    divs.forEach((div) => {
+      div.style.display = 'none';
+    });
+
+    // Show the respective div based on the button index
+    divs[index].style.display = 'block';
+    back.style.display = 'block';
+
+    // Update the inventory view
+    updateInventory();
+  });
+});
+
+
 
 /////////////////////////////////////////////////////////
 
@@ -188,8 +252,9 @@ class Item{
   moodPoints;
   quote;
   quantity;
+  image;
 
-  constructor(name, button, price, itemType, moodPoints, quote){
+  constructor(name, button, price, itemType, moodPoints, quote, image){
     this.name = name;
     this.price = price;
     this.button = button;
@@ -197,6 +262,13 @@ class Item{
     this.moodPoints = moodPoints;
     this.quote = "pocket penguin: " + quote;
     this.quantity = 0;
+    this.image = image;
+    this.setImage(image);
+  }
+
+  setImage(image){
+    this.button.style.backgroundImage = image;
+    this.button.style.backgroundSize = "100% 100%";
   }
 
   setPrice(price){
@@ -249,12 +321,12 @@ function checkSnow(cost){
 }
 
 //create items
-const storeItem1 = new Item("one", document.querySelector('#store-item-one'), 1, "food", 1, "this is item 1");
-const storeItem2 = new Item("two", document.querySelector('#store-item-two'),2, "food", 1, "this is item 2");
-const storeItem3 = new Item("three", document.querySelector('#store-item-three'),3, "food", 1, "this is item 3");
-const storeItem4 = new Item("four", document.querySelector('#store-item-four'),4, "toy", 1, "this is item 4");
-const storeItem5 = new Item("five", document.querySelector('#store-item-five'),5, "toy", 1, "this is item 5");
-const storeItem6 = new Item("six", document.querySelector('#store-item-six'),6, "toy", 1, "this is item 6");
+const storeItem1 = new Item("shrimp", document.querySelector('#store-item-one'), 2, "food", 1, "yum! shrimp!", "url('assets/store-items/shrimp.png')");
+const storeItem2 = new Item("fish", document.querySelector('#store-item-two'),3, "food", 1, "yay! fish!", "url('assets/store-items/fish.png')");
+const storeItem3 = new Item("squid", document.querySelector('#store-item-three'),4, "food", 2, "HELL YEAH!!! SQUID!!!", "url('assets/store-items/squid.png')");
+const storeItem4 = new Item("sled", document.querySelector('#store-item-four'),10, "toy", 2, "weeeeee!!", "url('assets/store-items/sled.png')");
+const storeItem5 = new Item("skates", document.querySelector('#store-item-five'),20, "toy", 2, "woohoo!!!", "url('assets/store-items/skates.png')");
+const storeItem6 = new Item("six", document.querySelector('#store-item-six'),30, "toy", 3, "you're gonna lose :)", "url('assets/store-items/tic-tac-toe.png')");
 
 storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, storeItem6);
 
@@ -275,14 +347,49 @@ storeItems.forEach(item => {
   });
 });
 /////////////////////////////////////////////////////////
-//penguin animations
 
+//penguin interactions
+/////////////////////////////////////////////////////////
+zeroHeart = ["i'm depressed", "i'm at zero hearts"];
+oneHeart = ["i'm sad", "i'm at one heart"];
+twoHeart = ["i'm neutral", "i'm at two hearts"];
+threeHeart = ["i'm happy!", "i'm at three hearts"];
+
+function getQuote(arr) {
+  const randomIndex = Math.floor(Math.random() * arr.length);
+  return arr[randomIndex];
+}
+
+function penguinInteract(mood){
+  if(!(mood[0].isFull)){ //no hearts
+    textBox("pocket penguin: " + getQuote(zeroHeart));
+    snow+=1;
+  }
+  else if(!(mood[1].isFull)){ //one heart
+    textBox("pocket penguin: " + getQuote(oneHeart));
+    snow+=2;
+  }
+  else if(!(mood[2].isFull)){ //two hearts
+    textBox("pocket penguin: " + getQuote(twoHeart));
+    snow+=3;
+  }
+  else if (mood[2].isFull){ //three hearts
+    textBox("pocket penguin: " + getQuote(threeHeart));
+    snow+=4;
+  }
+  snowElement.textContent = `snow: ${snow}`;
+}
+
+/////////////////////////////////////////////////////////
+
+//penguin animations
+/////////////////////////////////////////////////////////
 // Get the element
 const penguin = document.getElementById('penguin');
 let animationPaused = false;
+let originalAnimation = '';
 
 // Function to handle animation end event
-
 function centertoRight() {
     //console.log("going right");
     // Change the background image
@@ -360,10 +467,13 @@ function standtoRight() {
 // Function to pause animation
 function pauseAnimation() {
     if (!animationPaused) {
+        originalAnimation = penguin.style.backgroundImage;
         penguin.style.animationPlayState = 'paused';
         animationPaused = true;
+        penguin.style.backgroundImage = "url('assets/penguin/penguin_front.png')";
         // Resume animation after 3 seconds
         setTimeout(() => {
+            penguin.style.backgroundImage = originalAnimation;
             penguin.style.animationPlayState = 'running';
             animationPaused = false;
         }, 3000); // Adjust pause duration as needed (in milliseconds)
@@ -377,44 +487,6 @@ penguin.style.animation = 'center 2s linear forwards';
 // Listen for click event to pause animation
 penguin.addEventListener('click', () => {
   pauseAnimation();
+  penguinInteract(mood);
 });
 ///////////////////////////////////////////////////////////////////////
-
-
-/*const store_btn = document.querySelector('#store-btn');
-
-const store_menu = document.querySelector('.store-menu');
-
-const food_btn = document.querySelector('#food-btn');
-
-const food_menu = document.querySelector('.food-menu');
-
-const toys_btn = document.querySelector('#toys-btn');
-
-const toys_menu = document.querySelector('.toys-menu');
-
-const eat_btn = document.querySelector('#eat-btn');
-
-const play_btn = document.querySelector('#play-btn');
-
-const dance_btn = document.querySelector('#dance-btn');
-
-const menu = document.querySelector('class');
-
-store_btn.addEventListener('click', ()=>{
-    if (store_menu.style.display === 'none'){
-        store_menu.style.display = 'block';
-    }
-    else{
-        store_menu.style.display = 'none';
-    }
-});
-
-food_btn.addEventListener('click', ()=>{
-    if (food_menu.style.display === 'none'){
-        food_menu.style.display = 'block';
-    }
-    else{
-        food_menu.style.display = 'none';
-    }
-});*/
