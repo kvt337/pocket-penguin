@@ -4,6 +4,7 @@ const buttons = document.querySelectorAll('.toggle-button');
 const divs = document.querySelectorAll('.toggle-div');
 const back = document.querySelector('#back-button');
 //use same approach for back buttons
+
 // Add click event listeners to the buttons
 buttons.forEach((button, index) => {
   button.addEventListener('click', () => {
@@ -42,16 +43,16 @@ const toyElement = document.querySelector('#play-menu');
 /////////////////////////////////////////////////////////
 
 let textID = document.querySelector('#text');
-let timeoutID;  // Variable to store the timeout ID
+let timeoutID;  // variable to store the timeout ID
 
 function textBox(text) {
-  // Clear any existing timeout
+  // clear any existing timeout
   clearTimeout(timeoutID);
 
-  // Set the text content to the provided text
+  // set the text content to the provided text
   textID.textContent = text;
 
-  // Set a new timeout to clear the text content after 5 seconds
+  //clear text content after 5 seconds
   timeoutID = setTimeout(() => {
     textID.textContent = '';
   }, 5000);
@@ -163,6 +164,10 @@ function addToInventory(item) {
 
     // Add event listener to the cloned item when used on penguin
     inventoryItem.addEventListener('click', () => {
+      //minigames
+      if (item.name === "tic-tac-toe"){
+        ticTacToe();
+      }
       item.removeQuantity();
       textBox(item.getQuote());
       moodIncreaser(mood, item.getMoodPoints());
@@ -237,8 +242,6 @@ buttons.forEach((button, index) => {
     updateInventory();
   });
 });
-
-
 
 /////////////////////////////////////////////////////////
 
@@ -326,7 +329,7 @@ const storeItem2 = new Item("fish", document.querySelector('#store-item-two'),3,
 const storeItem3 = new Item("squid", document.querySelector('#store-item-three'),4, "food", 2, "HELL YEAH!!! SQUID!!!", "url('assets/store-items/squid.png')");
 const storeItem4 = new Item("sled", document.querySelector('#store-item-four'),10, "toy", 2, "weeeeee!!", "url('assets/store-items/sled.png')");
 const storeItem5 = new Item("skates", document.querySelector('#store-item-five'),20, "toy", 2, "woohoo!!!", "url('assets/store-items/skates.png')");
-const storeItem6 = new Item("six", document.querySelector('#store-item-six'),30, "toy", 3, "you're gonna lose :)", "url('assets/store-items/tic-tac-toe.png')");
+const storeItem6 = new Item("tic-tac-toe", document.querySelector('#store-item-six'),30, "toy", 3, "you're gonna lose :)", "url('assets/store-items/tic-tac-toe.png')");
 
 storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, storeItem6);
 
