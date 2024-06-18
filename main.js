@@ -166,11 +166,22 @@ function addToInventory(item) {
     inventoryItem.addEventListener('click', () => {
       //minigames
       if (item.name === "tic-tac-toe"){
-        ticTacToe();
+        ticTacToe(() => {
+          if (ticTacToeFinished) {
+              moodIncreaser(mood, item.getMoodPoints());
+              textBox('pocket penguin: good game! :D');
+          }
+          else{
+            textBox('pocket penguin: boooooo');
+          }
+      });
       }
+      else{
+        textBox(item.getQuote());
+        moodIncreaser(mood, item.getMoodPoints());
+      }
+
       item.removeQuantity();
-      textBox(item.getQuote());
-      moodIncreaser(mood, item.getMoodPoints());
 
       if (item.itemType === 'food') {
         foodElement.style.display = 'none';

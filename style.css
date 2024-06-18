@@ -168,6 +168,9 @@
 /********************************************/
 #tic-tac-toe-menu{
     display: none;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     z-index: 2000;
     width: 250px;
@@ -175,6 +178,58 @@
     left: 125px;
     top: 150px;
     background: url('assets/tic-tac-toe/tic-tac-toe-menu.png');
+}
+
+#difficulty{
+    display: none;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    position: absolute;
+    z-index: 2001;
+    width: 150px;
+    height: 80px;
+    left: 50px;
+    top: 80px;
+    background-color: rgb(107, 183, 221);
+}
+
+.difficulty-btn{
+    background-color: purple;
+    width: 58px;
+    height: 34px;
+    margin: 4px;
+}
+
+#easy-btn{
+    background: url('assets/tic-tac-toe/easy-btn.png');
+}
+
+#hard-btn{
+    background: url('assets/tic-tac-toe/hard-btn.png');
+}
+
+#board{
+    margin-top: 7px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    width: 182px;
+    height: 182px;
+    background-color: rgba(255, 255, 0, 0);
+}
+
+.box{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+    margin: 1px;
+    width: 58px;
+    height: 58px;
+    background-color: rgba(245, 137, 158, 0);
 }
 
 #disable-buttons{
