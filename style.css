@@ -93,21 +93,21 @@
     display: none;
 }
 
-#store-btn, #food-btn, #toys-btn{
+#decor-btn, #food-btn, #toys-btn{
     margin-bottom: 10px;
     margin-left: 8px;
 }
 
 /********************************************/
 
-#store-btn{
-    background: url('assets/store.png');
+#food-btn{
+    background: url('assets/food.png');
     margin-top: 105px;
     width: 62px;
     height: 30px;
 }
 
-#store-menu{
+#food-menu{
     display: none;
     position: absolute;
     z-index: 2000;
@@ -115,7 +115,7 @@
     height: 240px;
     left: 125px;
     top: 150px;
-    background: url('assets/store-menu.png');
+    background: url('assets/food-menu.png');
 }
 
 .store-items{
@@ -243,25 +243,6 @@
 
 /********************************************/
 
-#food-btn{
-    background: url('assets/food.png');
-    width: 62px;
-    height: 30px;
-}
-
-#food-menu{
-    display: none;
-    position: absolute;
-    z-index: 3000;
-    width: 250px;
-    height: 240px;
-    left: 125px;
-    top: 150px;
-    background: url('assets/food-menu.png');
-}
-
-/********************************************/
-
 #toys-btn{
     background: url('assets/toys.png');
     width: 62px;
@@ -271,12 +252,31 @@
 #toys-menu{
     display: none;
     position: absolute;
-    z-index: 2000;
+    z-index: 3000;
     width: 250px;
     height: 240px;
     left: 125px;
     top: 150px;
     background: url('assets/toys-menu.png');
+}
+
+/********************************************/
+
+#decor-btn{
+    background: url('assets/decor.png');
+    width: 62px;
+    height: 30px;
+}
+
+#decor-menu{
+    display: none;
+    position: absolute;
+    z-index: 2000;
+    width: 250px;
+    height: 240px;
+    left: 125px;
+    top: 150px;
+    background: url('assets/decor-menu.png');
 }
 
 /********************************************/
@@ -292,7 +292,7 @@
     bottom: 124px;
 }
 
-#eat-btn, #play-btn, #dance-btn{
+#eat-btn, #play-btn, #furnish-btn{
     margin-bottom: 10px;
     margin-left: 8px;
 }
@@ -333,13 +333,13 @@
 }
 
 
-#dance-btn{
-    background: url('assets/dance.png');
+#furnish-btn{
+    background: url('assets/furnish.png');
     width: 62px;
     height: 30px;
 }
 
-#dance-menu{
+#furnish-menu{
     display: none;
     position: absolute;
     z-index: 2000;
@@ -347,7 +347,7 @@
     height: 240px;
     left: 125px;
     top: 150px;
-    background: url('assets/dance-menu.png');
+    background: url('assets/furnish-menu.png');
 }
 
 /********************************************/
