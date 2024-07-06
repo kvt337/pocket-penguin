@@ -37,6 +37,7 @@ const storeItems = [];
 
 const foodElement = document.querySelector('#eat-menu');
 const toyElement = document.querySelector('#play-menu');
+const decorElement = document.querySelector('#furnish-menu');
 /////////////////////////////////////////////////////////
 
 //talk box
@@ -90,6 +91,7 @@ class Heart {
 const heart1 = new Heart(document.querySelector('#heart-one'), true);
 const heart2 = new Heart(document.querySelector('#heart-two'), true);
 const heart3 = new Heart(document.querySelector('#heart-three'), false);
+let time = 10000;
 
 mood.push(heart1, heart2, heart3);
 
@@ -111,7 +113,7 @@ function startMoodDecreaser() {
   }
 
   // Start a new interval
-  moodDecreaserInterval = setInterval(() => moodDecreaser(mood), 10000);
+  moodDecreaserInterval = setInterval(() => moodDecreaser(mood), time);
 }
 
 function moodIncreaser(mood, points) {
@@ -205,7 +207,8 @@ function addToInventory(item) {
         inventoryItem.style.display = 'none';
       }
     });
-  } else {
+  } 
+  else {
     // Update the quantity span
     quantityElement = inventoryItem.querySelector('p');
     if (quantityElement) {
@@ -237,6 +240,97 @@ function updateInventory() {
   });
 }
 
+function addDecor(item){
+  let inventoryItem;
+  let decorState;
+
+  // Find the existing cloned item in the inventory using data attribute
+  const selector = `[data-id="${item.button.id}"]`;
+  inventoryItem = decorElement.querySelector(selector);
+
+  //decor item does not exist, add to inventory
+  if (!inventoryItem) {
+    // Clone the button element if it does not exist in the inventory
+    inventoryItem = item.button.cloneNode(true);
+    inventoryItem.setAttribute('data-id', item.button.id); // Assign a data attribute
+    inventoryItem.classList.add('store-items');
+
+    // Create a span element to determine if decor is placed or not
+    decorState = document.createElement('p');
+    decorState.innerHTML = 'place';
+    inventoryItem.appendChild(decorState);
+
+    decorElement.appendChild(inventoryItem);
+
+    item.setStatus('in inventory');
+
+    /*
+    if (item.getItemType() === "food") {
+      foodElement.appendChild(inventoryItem);
+    } else if (item.getItemType() === "toy") {
+      toyElement.appendChild(inventoryItem);
+    }*/
+
+    // Add event listener to the cloned item when used on penguin
+    inventoryItem.addEventListener('click', () => {
+
+      //place item
+      if (item.getStatus()==="in inventory"){
+        item.setStatus("in room");
+        decorState.innerHTML = "clear";
+        textBox(item.getQuote());
+        time += item.getMoodPoints();
+        item.getDOMelement().style.display = 'block';
+        //TODO: add code to add decor to room,, honestly just set it to show using dom manipulation lol
+      }
+      //return item back to inventory
+      else{
+        time -= item.getMoodPoints();
+        item.setStatus("in inventory");
+        decorState.innerHTML = "place";
+        item.getDOMelement().style.display = 'none';
+      }
+
+      //item.removeQuantity();
+
+      decorElement.style.display = 'none';
+      back.style.display = 'none';
+      /*
+      if (item.itemType === 'food') {
+        foodElement.style.display = 'none';
+        back.style.display = 'none';
+      } else if (item.itemType === 'toy') {
+        toyElement.style.display = 'none';
+        back.style.display = 'none';
+      }*/
+      //console.log("quantity after using: " + item.getQuantity()); // Added logging
+      // Update the quantity span in the cloned item
+      //const updatedQuantityElement = inventoryItem.querySelector('p');
+      /*if (updatedQuantityElement) {
+        updatedQuantityElement.innerHTML = item.getQuantity();
+      } 
+      else {
+        console.error("Quantity span not found in inventory item");
+      }
+
+      if (item.getQuantity() === 0) {
+        inventoryItem.style.display = 'none';
+      }*/
+
+    });
+  } 
+  /*else {
+    //the decor item already exists, toggle placement
+    quantityElement = inventoryItem.querySelector('p');
+    if (quantityElement) {
+      console.log("Updating existing quantity span: " + item.getQuantity()); // Added logging
+      quantityElement.innerHTML = item.getQuantity();
+    } else {
+      console.error("Quantity span not found in existing inventory item");
+    }
+  }*/
+}
+
 // Add this to ensure the inventory is updated when switching views
 buttons.forEach((button, index) => {
   button.addEventListener('click', () => {
@@ -263,12 +357,14 @@ class Item{
   price;
   button;
   itemType;
-  moodPoints;
+  moodPoints; //for food/toy items only
   quote;
-  quantity;
+  quantity; //for food/toy items only
+  status; //for furniture items only
   image;
+  DOMelement; //for furniture items only
 
-  constructor(name, button, price, itemType, moodPoints, quote, image){
+  constructor(name, button, price, itemType, moodPoints, quote, image, DOMelement){
     this.name = name;
     this.price = price;
     this.button = button;
@@ -278,11 +374,16 @@ class Item{
     this.quantity = 0;
     this.image = image;
     this.setImage(image);
+    this.DOMelement = DOMelement;
   }
 
   setImage(image){
     this.button.style.backgroundImage = image;
     this.button.style.backgroundSize = "100% 100%";
+  }
+
+  setDOMelement(DOMelement){
+    this.DOMelement = DOMelement;
   }
 
   setPrice(price){
@@ -295,6 +396,14 @@ class Item{
 
   removeQuantity(){
     this.quantity = this.quantity-1;
+  }
+
+  setStatus(status){
+    this.status = status;
+  }
+
+  getDOMelement(){
+    return this.DOMelement;
   }
 
   getName(){
@@ -321,6 +430,10 @@ class Item{
     return this.quantity;
   }
 
+  getStatus(){
+    return this.status;
+  }
+
 }
 
 function checkSnow(cost){
@@ -341,8 +454,11 @@ const storeItem3 = new Item("squid", document.querySelector('#store-item-three')
 const storeItem4 = new Item("sled", document.querySelector('#store-item-four'),10, "toy", 2, "weeeeee!!", "url('assets/store-items/sled.png')");
 const storeItem5 = new Item("skates", document.querySelector('#store-item-five'),20, "toy", 2, "woohoo!!!", "url('assets/store-items/skates.png')");
 const storeItem6 = new Item("tic-tac-toe", document.querySelector('#store-item-six'),30, "toy", 3, "you're gonna lose :)", "url('assets/store-items/tic-tac-toe.png')");
+const storeItem7 = new Item("couch", document.querySelector('#store-item-seven'),50, "decor", 5000, "coooool", "", document.querySelector('#couch'));
+const storeItem8 = new Item("lights", document.querySelector('#store-item-eight'),70, "decor", 10000, "pretty!!", "", document.querySelector('#lights'));
+const storeItem9 = new Item("tank", document.querySelector('#store-item-nine'),100, "decor", 20000, "noice", "", document.querySelector('#tank'));
 
-storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, storeItem6);
+storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, storeItem6, storeItem7, storeItem8, storeItem9);
 
 //add event listener to item so that when clicked, can exchange snow or alert user that there is not enough snow
 //TODO: conditional for whether an item clicked in in the store (needs to be bought) or in the inventory (needs to be used)
@@ -352,8 +468,14 @@ storeItems.forEach(item => {
     if (checkSnow(item.getPrice())) {
       console.log("sufficient snow");
       textBox("you bought " + item.getName());
-      addToInventory(item);
-    } else {
+      if (item.getItemType()==="decor"){
+        addDecor(item);
+      }
+      else{
+        addToInventory(item);
+      }
+    } 
+    else {
       console.log("not enough snow");
       textBox("not enough snow");
     }
