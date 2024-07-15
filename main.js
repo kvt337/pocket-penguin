@@ -148,6 +148,7 @@ function addToInventory(item) {
   inventoryItem = foodElement.querySelector(selector) || toyElement.querySelector(selector);
 
   if (!inventoryItem) {
+    
     // Clone the button element if it does not exist in the inventory
     inventoryItem = item.button.cloneNode(true);
     inventoryItem.setAttribute('data-id', item.button.id); // Assign a data attribute
@@ -155,8 +156,13 @@ function addToInventory(item) {
 
     // Create a span element to hold the quantity
     quantityElement = document.createElement('p');
-    quantityElement.innerHTML = item.getQuantity();
+    quantityElement.innerHTML = 'qty: ' + item.getQuantity();
     inventoryItem.appendChild(quantityElement);
+    quantityElement.style.marginTop = '69px';
+    quantityElement.style.background = '#51AADD';
+    quantityElement.style.borderStyle = 'solid';
+    quantityElement.style.borderColor = '#FFDE7E';
+    quantityElement.style.fontSize = '12px';
 
     if (item.getItemType() === "food") {
       foodElement.appendChild(inventoryItem);
@@ -198,7 +204,7 @@ function addToInventory(item) {
       // Update the quantity span in the cloned item
       const updatedQuantityElement = inventoryItem.querySelector('p');
       if (updatedQuantityElement) {
-        updatedQuantityElement.innerHTML = item.getQuantity();
+        updatedQuantityElement.innerHTML = 'qty: ' + item.getQuantity();
       } else {
         console.error("Quantity span not found in inventory item");
       }
@@ -228,7 +234,7 @@ function updateInventory() {
     if (inventoryItem) {
       const quantityElement = inventoryItem.querySelector('p');
       if (quantityElement) {
-        quantityElement.innerHTML = item.getQuantity();
+        quantityElement.innerHTML = 'qty: ' + item.getQuantity();
         if (item.getQuantity() === 0) {
           inventoryItem.style.display = 'none';
         } else {
@@ -255,21 +261,24 @@ function addDecor(item){
     inventoryItem.setAttribute('data-id', item.button.id); // Assign a data attribute
     inventoryItem.classList.add('store-items');
 
+    inventoryItem.style.marginRight='4px';
+
     // Create a span element to determine if decor is placed or not
     decorState = document.createElement('p');
     decorState.innerHTML = 'place';
     inventoryItem.appendChild(decorState);
+    decorState.style.marginTop = '69px';
+    decorState.style.background = '#51AADD';
+    decorState.style.borderStyle = 'solid';
+    decorState.style.borderColor = '#FFDE7E';
+    decorState.style.fontSize = '12px';
 
     decorElement.appendChild(inventoryItem);
 
     item.setStatus('in inventory');
 
-    /*
-    if (item.getItemType() === "food") {
-      foodElement.appendChild(inventoryItem);
-    } else if (item.getItemType() === "toy") {
-      toyElement.appendChild(inventoryItem);
-    }*/
+    item.setStock('out');
+
 
     // Add event listener to the cloned item when used on penguin
     inventoryItem.addEventListener('click', () => {
@@ -290,45 +299,10 @@ function addDecor(item){
         decorState.innerHTML = "place";
         item.getDOMelement().style.display = 'none';
       }
-
-      //item.removeQuantity();
-
       decorElement.style.display = 'none';
       back.style.display = 'none';
-      /*
-      if (item.itemType === 'food') {
-        foodElement.style.display = 'none';
-        back.style.display = 'none';
-      } else if (item.itemType === 'toy') {
-        toyElement.style.display = 'none';
-        back.style.display = 'none';
-      }*/
-      //console.log("quantity after using: " + item.getQuantity()); // Added logging
-      // Update the quantity span in the cloned item
-      //const updatedQuantityElement = inventoryItem.querySelector('p');
-      /*if (updatedQuantityElement) {
-        updatedQuantityElement.innerHTML = item.getQuantity();
-      } 
-      else {
-        console.error("Quantity span not found in inventory item");
-      }
-
-      if (item.getQuantity() === 0) {
-        inventoryItem.style.display = 'none';
-      }*/
-
     });
   } 
-  /*else {
-    //the decor item already exists, toggle placement
-    quantityElement = inventoryItem.querySelector('p');
-    if (quantityElement) {
-      console.log("Updating existing quantity span: " + item.getQuantity()); // Added logging
-      quantityElement.innerHTML = item.getQuantity();
-    } else {
-      console.error("Quantity span not found in existing inventory item");
-    }
-  }*/
 }
 
 // Add this to ensure the inventory is updated when switching views
@@ -361,10 +335,11 @@ class Item{
   quote;
   quantity; //for food/toy items only
   status; //for furniture items only
+  stock;
   image;
   DOMelement; //for furniture items only
 
-  constructor(name, button, price, itemType, moodPoints, quote, image, DOMelement){
+  constructor(name, button, price, itemType, moodPoints, quote, image, stock, DOMelement){
     this.name = name;
     this.price = price;
     this.button = button;
@@ -375,6 +350,7 @@ class Item{
     this.image = image;
     this.setImage(image);
     this.DOMelement = DOMelement;
+    this.stock = stock;
   }
 
   setImage(image){
@@ -384,6 +360,10 @@ class Item{
 
   setDOMelement(DOMelement){
     this.DOMelement = DOMelement;
+  }
+
+  setStock(stock){
+    this.stock = stock;
   }
 
   setPrice(price){
@@ -404,6 +384,10 @@ class Item{
 
   getDOMelement(){
     return this.DOMelement;
+  }
+
+  getStock(){
+    return this.stock;
   }
 
   getName(){
@@ -448,15 +432,15 @@ function checkSnow(cost){
 }
 
 //create items
-const storeItem1 = new Item("shrimp", document.querySelector('#store-item-one'), 2, "food", 1, "yum! shrimp!", "url('assets/store-items/shrimp.png')");
-const storeItem2 = new Item("fish", document.querySelector('#store-item-two'),3, "food", 1, "yay! fish!", "url('assets/store-items/fish.png')");
-const storeItem3 = new Item("squid", document.querySelector('#store-item-three'),4, "food", 2, "HELL YEAH!!! SQUID!!!", "url('assets/store-items/squid.png')");
-const storeItem4 = new Item("sled", document.querySelector('#store-item-four'),10, "toy", 2, "weeeeee!!", "url('assets/store-items/sled.png')");
+const storeItem1 = new Item("shrimp", document.querySelector('#store-item-one'), 2, "food", 1, "yum! shrimp!", "url('assets/store-items/shrimp.png')", "in");
+const storeItem2 = new Item("fish", document.querySelector('#store-item-two'),3, "food", 1, "yay! fish!", "url('assets/store-items/fish.png')", "in");
+const storeItem3 = new Item("squid", document.querySelector('#store-item-three'),4, "food", 2, "HELL YEAH!!! SQUID!!!", "url('assets/store-items/squid.png')", "in");
+const storeItem4 = new Item("sled", document.querySelector('#store-item-four'),10, "toy", 2, "weeeeee!!", "url('assets/store-items/sled.png')", "in");
 const storeItem5 = new Item("skates", document.querySelector('#store-item-five'),20, "toy", 2, "woohoo!!!", "url('assets/store-items/skates.png')");
-const storeItem6 = new Item("tic-tac-toe", document.querySelector('#store-item-six'),30, "toy", 3, "you're gonna lose :)", "url('assets/store-items/tic-tac-toe.png')");
-const storeItem7 = new Item("couch", document.querySelector('#store-item-seven'),50, "decor", 5000, "coooool", "", document.querySelector('#couch'));
-const storeItem8 = new Item("lights", document.querySelector('#store-item-eight'),70, "decor", 10000, "pretty!!", "", document.querySelector('#lights'));
-const storeItem9 = new Item("tank", document.querySelector('#store-item-nine'),100, "decor", 20000, "noice", "", document.querySelector('#tank'));
+const storeItem6 = new Item("tic-tac-toe", document.querySelector('#store-item-six'),30, "toy", 3, "you're gonna lose :)", "url('assets/store-items/tic-tac-toe.png')", "in");
+const storeItem7 = new Item("couch", document.querySelector('#store-item-seven'),50, "decor", 5000, "coooool", "url('assets/store-items/couch.png')", "in", document.querySelector('#couch'));
+const storeItem8 = new Item("lights", document.querySelector('#store-item-eight'),70, "decor", 10000, "pretty!!", "url('assets/store-items/lights.png')", "in", document.querySelector('#lights'));
+const storeItem9 = new Item("tank", document.querySelector('#store-item-nine'),100, "decor", 20000, "noice", "url('assets/store-items/tank.png')", "in", document.querySelector('#tank'));
 
 storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, storeItem6, storeItem7, storeItem8, storeItem9);
 
@@ -465,7 +449,11 @@ storeItems.push(storeItem1, storeItem2, storeItem3, storeItem4, storeItem5, stor
 storeItems.forEach(item => {
   item.button.addEventListener('click', (parentDiv) => {
 
-    if (checkSnow(item.getPrice())) {
+    if(item.getStock()==="out"){
+      console.log("out of stock");
+      textBox("out of stock");
+    }
+    else if (checkSnow(item.getPrice())) {
       console.log("sufficient snow");
       textBox("you bought " + item.getName());
       if (item.getItemType()==="decor"){

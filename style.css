@@ -9,7 +9,8 @@
 /********************************************/
 
 #container{
-    font-family: 'Terminal', 'Arial', 'sans-serif';
+    font-family: 'Pixelify Sans', 'Arial', 'sans-serif';
+    font-size: 19px;
     position: relative;
     top: 20px;
     z-index: 0;
@@ -30,11 +31,24 @@
    /* margin: auto;*/
 }
 
-#meter, #meter-label, #currency{
+#meter{
+    margin-top: 45px;
+    display: inline-block;
+}
+
+#meter-label{
+    margin-left: 70px;
+    margin-top: 45px;
+    display: inline-block;
+}
+
+#currency{
     margin-left: 30px;
     margin-top: 45px;
     display: inline-block;
 }
+
+
 
 /********************************************/
 
@@ -44,8 +58,9 @@
 
 #heart-one, #heart-two, #heart-three{
     background: url('assets/heart.png');
-    width: 62px;
-    height: 48px;
+    width: 50px;
+    height: 36px;
+    background-size: 50px 36px;
     display: inline-block;
 }
 
@@ -57,8 +72,10 @@
 
 #snow-icon{
     background: url('assets/snow.png');
-    width: 43px;
-    height: 42px;
+    background-size: 28px 27px;
+    width: 28px;
+    height: 27px;
+    margin-top: 10px;
 }
 
 /********************************************/
@@ -121,8 +138,8 @@
 .store-items{
     display: inline-block;
     position: relative;
-    margin-top: 5px;
-    top: 35px;
+    margin-bottom: 5px;
+    top: 30px;
     left: 20px;
 }
 
@@ -442,18 +459,19 @@
     top: 190px;
     left: 20px;
     z-index: 1;
-    width: 100px;
+    width: 119px;
     height: 100px;
-    background-color: pink;
+    background: url('assets/couch-display.png');
 }
 
 #lights{
     display: none;
     position: absolute;
     z-index: 1;
-    width: 340px;
+    width: 250px;
     height: 100px;
-    background-color: black;
+    left: 45px;
+    background: url('assets/lights-display.gif');
 }
 
 #tank{
@@ -464,5 +482,5 @@
     z-index: 1;
     width: 100px;
     height: 100px;
-    background-color: white;
+    background: url('assets/tank-display.gif');
 }
