@@ -22,11 +22,7 @@ function ticTacTextBox(text) {
   
     // set the text content to the provided text
     textID.textContent = text;
-  
-    //clear text content after 5 seconds
-    /*timeoutID = setTimeout(() => {
-      textID.textContent = '';
-    }, 5000);*/
+
   }
 
 function clearBoard() {
@@ -282,6 +278,7 @@ function startGame() {
     });
 }
 
+//start function, select difficulty
 function ticTacToe(callback) {
     console.log("tic tac toe function");
     clearBoard();

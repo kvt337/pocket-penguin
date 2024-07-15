@@ -70,8 +70,8 @@ class Heart {
   button;
   isFull;
 
-  constructor(image, isFull) { //start state of heart
-    this.image = image;
+  constructor(button, isFull) { //start state of heart
+    this.button = button;
     this.isFull = isFull;
     if (this.isFull) {
       this.setFull();
