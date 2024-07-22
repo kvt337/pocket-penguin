@@ -2,6 +2,8 @@
 
 Pocket Penguin is a simple web-based game in which you interact with a small penguin inside an igloo. The goal is to keep the penguin’s mood up. To do this, the user can buy items using the in-game currency, snow, and use them on the penguin to increase its mood.
 
+![ppreadme](https://github.com/user-attachments/assets/425ca2b0-609a-4169-915c-d9798243eff7)
+
 ### Mood Meter
 Located in the top left panel. Consists of 3 hearts. The game starts with two hearts filled. Every 10 seconds, the mood meter decreases by 1.
 
